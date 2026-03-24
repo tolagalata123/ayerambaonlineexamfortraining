@@ -197,6 +197,7 @@
             line-height: 28px;
             font-size: 13px;
             font-weight: bold;
+            transition: width 0.3s ease;
         }
         .delete-btn {
             background: #dc2626;
@@ -253,6 +254,16 @@
             text-align: center;
             margin-top: 20px;
         }
+        .format-example {
+            background: white;
+            padding: 15px;
+            border-radius: 20px;
+            font-family: monospace;
+            font-size: 12px;
+            text-align: left;
+            margin-top: 15px;
+            border: 1px solid #cbd5e1;
+        }
         @media (max-width: 700px) { .box { padding: 20px; } .btn { padding: 8px 16px; } .timer-panel { font-size: 1.2rem; } }
     </style>
 </head>
@@ -260,7 +271,7 @@
 <div class="container">
     <div class="header">
         <h1>🏫 AYER AMBA SECONDARY SCHOOL <br> ONLINE NATIONAL EXAM TRAINING CENTER FOR GRADE 12 STUDENTS</h1>
-        <p style="color: #2c3e50;">⚡ Smart Assessment </p>
+        <p style="color: #2c3e50;">⚡ Smart Assessment | Dynamic Timer | Bulk Upload Enabled</p>
     </div>
     <div class="box">
         <div class="sync-status" id="syncStatus">🔄 Connecting to secure cloud database...</div>
@@ -278,8 +289,8 @@
                 <button class="btn btn-warning" onclick="showAdminSection()">🔐 ADMIN PANEL</button>
             </div>
             <div style="background: #eef2ff; padding: 20px; border-radius: 32px; text-align: center;">
-                <p><strong>🔑 Admin Login:</strong> username: <code></code> / password: <code></code></p>
-                
+                <p><strong>🔑 Admin Login:</strong> username: <code>admin</code> / password: <code>tola@121212</code></p>
+                <p>📢 Students: Register with any username/password. Timer: 1.5 min per question. Submit button appears on LAST question only.</p>
                 <p>⚡ Developed by <strong>TOLA GALATA AYANSA</strong> | 📞 +251976761165 | ✉️ @tolahep</p>
             </div>
         </div>
@@ -325,7 +336,6 @@
                             <button class="btn btn-primary" onclick="nextQuestion()">Next ▶</button>
                         </div>
                         <div id="questionDots" style="text-align: center; margin: 20px;"></div>
-                        <!-- SUBMIT BUTTON - WILL BE SHOWN ONLY ON LAST QUESTION -->
                         <div id="submitContainer" class="submit-container hidden">
                             <button class="btn btn-success" id="submitExamBtn" onclick="submitExam()" style="font-size:1.1rem; padding: 14px 40px;">✅ SUBMIT EXAM</button>
                         </div>
@@ -340,7 +350,7 @@
             </div>
         </div>
 
-        <!-- ADMIN SECTION (fully functional, preserved) -->
+        <!-- ADMIN SECTION -->
         <div id="adminSection" class="hidden">
             <div id="adminLogin" class="login-container">
                 <h2>🔐 Administrator Access</h2>
@@ -357,14 +367,42 @@
                     <div class="admin-tab" onclick="showAdminTab('upload', this)">📁 Bulk Upload</div>
                     <div class="admin-tab" onclick="showAdminTab('questions', this)">📋 Questions Bank</div>
                     <div class="admin-tab" onclick="showAdminTab('students', this)">👥 Students</div>
-                    <div class="admin-tab" onclick="showAdminTab('scores', this)">📈 Score Records <span class="google-sheet-badge">Live Sheets</span></div>
+                    <div class="admin-tab" onclick="showAdminTab('scores', this)">📈 Score Records</div>
                 </div>
                 <div id="adminOverview" class="admin-content"><h3>System Overview</h3><div class="stats-grid"><div class="stat-card"><div class="stat-number" id="adminTotalQuestions">0</div><div>Questions</div></div><div class="stat-card"><div class="stat-number" id="adminTotalStudents">0</div><div>Students</div></div><div class="stat-card"><div class="stat-number" id="adminTotalExams">0</div><div>Exams</div></div><div class="stat-card"><div class="stat-number" id="adminAvgScore">0%</div><div>Avg Score</div></div></div></div>
                 <div id="adminAdd" class="admin-content hidden"><h3>➕ Insert New Question</h3><div class="add-question-form"><input type="text" id="newQuestion" placeholder="Enter question text"><input type="text" id="optA" placeholder="Option A"><input type="text" id="optB" placeholder="Option B"><input type="text" id="optC" placeholder="Option C"><input type="text" id="optD" placeholder="Option D"><select id="correctAnswer"><option value="">-- Correct choice --</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select><button class="btn btn-success" id="addButton" onclick="addQuestionToSheet()">📤 Push to Google Sheets</button></div><div id="addMessage" style="margin-top:12px;"></div></div>
-                <div id="adminUpload" class="admin-content hidden"><h3>📂 Mass Import Questions</h3><div class="upload-area"><p><strong>Format:</strong> Q: text / A: .. / B: .. / C: .. / D: .. / ANS: letter (blank line between)</p><input type="file" id="fileInput" accept=".txt"><div class="button-group"><button class="btn btn-success" onclick="uploadFileToSheet(true)">🔁 Replace & Upload</button><button class="btn btn-primary" onclick="uploadFileToSheet(false)">➕ Append</button><button class="btn btn-purple" onclick="loadSampleQuestions()">📚 Load Demos</button></div><div id="uploadProgress"></div></div></div>
+                <div id="adminUpload" class="admin-content hidden">
+                    <h3>📂 Mass Import Questions</h3>
+                    <div class="upload-area">
+                        <p><strong>📝 Format Requirements:</strong> Each question block must be separated by a blank line.</p>
+                        <div class="format-example">
+                            <strong>Example:</strong><br>
+                            Q: What is the capital of Ethiopia?<br>
+                            A: Addis Ababa<br>
+                            B: Nairobi<br>
+                            C: Cairo<br>
+                            D: Kampala<br>
+                            ANS: A<br>
+                            <br>
+                            Q: Who developed relativity?<br>
+                            A: Newton<br>
+                            B: Einstein<br>
+                            C: Galileo<br>
+                            D: Tesla<br>
+                            ANS: B
+                        </div>
+                        <input type="file" id="fileInput" accept=".txt,.csv">
+                        <div class="button-group" style="justify-content: center; margin-top: 20px;">
+                            <button class="btn btn-danger" onclick="uploadFileToSheet(true)">🗑️ Replace All & Upload</button>
+                            <button class="btn btn-primary" onclick="uploadFileToSheet(false)">➕ Append to Existing</button>
+                            <button class="btn btn-purple" onclick="loadSampleQuestions()">📚 Load Demo Questions (5)</button>
+                        </div>
+                        <div id="uploadProgress" style="margin-top: 20px;"></div>
+                    </div>
+                </div>
                 <div id="adminQuestions" class="admin-content hidden"><h3>📋 Manage Questions</h3><div class="button-group"><button class="btn btn-danger" onclick="deleteAllQuestions()">🗑️ Delete ALL</button><button class="btn btn-primary" onclick="refreshQuestions()">🔄 Refresh</button></div><div id="questionList"></div></div>
                 <div id="adminStudents" class="admin-content hidden"><h3>👥 Student Registry</h3><input type="text" id="studentSearch" placeholder="Search by name..." onkeyup="searchStudents()"><div class="button-group"><button class="btn btn-danger" onclick="deleteAllStudents()">⚠️ Delete All Students</button><button class="btn btn-primary" onclick="loadStudentsList()">⟳ Refresh</button></div><div id="studentList"></div></div>
-                <div id="adminScores" class="admin-content hidden"><h3>🏆 Scoreboard (Google Sheets)</h3><div class="search-box"><input type="text" id="scoreSearch" placeholder="Search student..." onkeyup="filterScores()"><select id="scoreFilter" onchange="filterScores()"><option value="all">All Students</option></select><button class="btn btn-primary" onclick="loadScoresFromSheet()">🔄 Sync Latest</button></div><div class="table-container"><table><thead><tr><th>Student</th><th>Score</th><th>Total</th><th>%</th><th>Result</th><th>Date</th></tr></thead><tbody id="scoresTableBody"></tbody></table></div></div>
+                <div id="adminScores" class="admin-content hidden"><h3>🏆 Scoreboard</h3><div class="search-box"><input type="text" id="scoreSearch" placeholder="Search student..." onkeyup="filterScores()"><select id="scoreFilter" onchange="filterScores()"><option value="all">All Students</option></select><button class="btn btn-primary" onclick="loadScoresFromSheet()">🔄 Sync Latest</button></div><div class="table-container"><table><thead><tr><th>Student</th><th>Score</th><th>Total</th><th>%</th><th>Result</th><th>Date</th></tr></thead><tbody id="scoresTableBody"></tbody></table></div></div>
                 <button class="btn btn-danger" onclick="logout()" style="margin-top:25px;">Logout</button>
             </div>
         </div>
@@ -372,23 +410,15 @@
 </div>
 
 <script>
-    // ==================== GOOGLE APPS SCRIPT URL ====================
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyzwwWiSsn6OAHYhAkIsLLg0Ef8qZKlBsqI7Uk6uAgtTchKcEvpwxO9ufD3dXfoog/exec";
     
     let currentUser = "", currentUserPassword = "";
     let currentQuestion = 0, answers = {}, examSubmitted = false, globalQuestions = [], allScores = [], isAdding = false;
+    let examTimerInterval = null, timeRemainingSeconds = 0, examActive = false;
     
-    // TIMER VARIABLES
-    let examTimerInterval = null;
-    let totalTimeSeconds = 0;
-    let timeRemainingSeconds = 0;
-    let examActive = false;
-    
-    // Calculate total exam minutes: 1.5 min per question (100q = 150min)
     function calculateTotalMinutesFromQuestions(questionCount) {
         if (questionCount === 0) return 0;
-        const minutesPerQuestion = 1.5;
-        return Math.ceil(questionCount * minutesPerQuestion);
+        return Math.ceil(questionCount * 1.5);
     }
     
     function startTimer() {
@@ -422,22 +452,13 @@
         const mins = Math.floor(timeRemainingSeconds / 60);
         const secs = timeRemainingSeconds % 60;
         timerDiv.innerHTML = `⏱️ Time Left: ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        if (timeRemainingSeconds === 0) timerDiv.innerHTML = "⏱️ TIME EXPIRED - Exam submitted";
     }
     
-    function stopTimer() {
-        if (examTimerInterval) {
-            clearInterval(examTimerInterval);
-            examTimerInterval = null;
-        }
-        examActive = false;
-    }
+    function stopTimer() { if (examTimerInterval) { clearInterval(examTimerInterval); examTimerInterval = null; } examActive = false; }
     
-    // Control submit button visibility - only show on last question
     function updateSubmitButtonVisibility() {
         const submitContainer = document.getElementById("submitContainer");
         if (!submitContainer) return;
-        // Show submit button ONLY when current question is the LAST question AND exam not submitted
         if (!examSubmitted && globalQuestions.length > 0 && currentQuestion === globalQuestions.length - 1) {
             submitContainer.classList.remove("hidden");
         } else {
@@ -457,22 +478,13 @@
         answers = {};
         examSubmitted = false;
         globalQuestions.forEach((_, i) => answers[i] = null);
-        
-        // Dynamic time based on total questions
-        const totalQ = globalQuestions.length;
-        const totalMinutes = calculateTotalMinutesFromQuestions(totalQ);
-        totalTimeSeconds = totalMinutes * 60;
-        timeRemainingSeconds = totalTimeSeconds;
+        const totalMinutes = calculateTotalMinutesFromQuestions(globalQuestions.length);
+        timeRemainingSeconds = totalMinutes * 60;
         examActive = true;
         updateTimerDisplay();
-        const timerDiv = document.getElementById("timerDisplay");
-        if (timerDiv) timerDiv.classList.remove("timer-warning");
         if (examTimerInterval) clearInterval(examTimerInterval);
         startTimer();
-        
-        // Reset result area
         document.getElementById("result").innerHTML = "";
-        // Show first question and update submit button visibility
         showQuestion();
         updateSubmitButtonVisibility();
     }
@@ -502,73 +514,134 @@
             dots += `<span class="${cls}" onclick="jumpToQuestion(${i})">${i+1}</span>`;
         });
         document.getElementById("questionDots").innerHTML = dots;
-        
-        // Update submit button visibility after showing question
         updateSubmitButtonVisibility();
     }
     
-    function selectAnswer(ans) {
-        if (!examSubmitted && examActive) {
-            answers[currentQuestion] = ans;
-            showQuestion();
-        }
-    }
-    
-    function jumpToQuestion(i) {
-        if (!examSubmitted && examActive) {
-            currentQuestion = i;
-            showQuestion();
-        }
-    }
-    
-    function nextQuestion() {
-        if (!examSubmitted && examActive && currentQuestion < globalQuestions.length - 1) {
-            currentQuestion++;
-            showQuestion();
-        }
-    }
-    
-    function previousQuestion() {
-        if (!examSubmitted && examActive && currentQuestion > 0) {
-            currentQuestion--;
-            showQuestion();
-        }
-    }
+    function selectAnswer(ans) { if (!examSubmitted && examActive) { answers[currentQuestion] = ans; showQuestion(); } }
+    function jumpToQuestion(i) { if (!examSubmitted && examActive) { currentQuestion = i; showQuestion(); } }
+    function nextQuestion() { if (!examSubmitted && examActive && currentQuestion < globalQuestions.length - 1) { currentQuestion++; showQuestion(); } }
+    function previousQuestion() { if (!examSubmitted && examActive && currentQuestion > 0) { currentQuestion--; showQuestion(); } }
     
     async function submitExam(isAuto = false) {
-        if (examSubmitted) {
-            if(!isAuto) document.getElementById("result").innerHTML += `<p style="color:orange;">⚠️ Already submitted!</p>`;
-            return;
-        }
-        if (!examActive && !isAuto) return;
-        
-        // Double-check: are we on the last question? If not and not auto, show message
+        if (examSubmitted) return;
         if (!isAuto && currentQuestion !== globalQuestions.length - 1) {
-            alert("⚠️ You can only submit the exam from the LAST question. Please navigate to the final question to submit.");
+            alert("⚠️ You can only submit the exam from the LAST question. Navigate to final question.");
             return;
         }
-        
         stopTimer();
         examSubmitted = true;
         examActive = false;
-        
         let score = 0;
         globalQuestions.forEach((q, i) => { if (answers[i] === q.answer) score++; });
         let percent = (score / globalQuestions.length) * 100;
         let status = percent >= 50 ? "PASS" : "FAIL";
-        const saved = await saveScoreToSheet(currentUser, currentUserPassword, score, globalQuestions.length, percent.toFixed(1), status);
-        
-        document.getElementById("result").innerHTML = `<div style="background:${percent>=50?'#d1fae5':'#fee2e2'}; padding:20px; border-radius:32px; text-align:center;"><h2>${percent>=50?'🎉 PASSED!':'📉 FAILED!'}</h2><p style="font-size:2.2rem; font-weight:800;">${score}/${globalQuestions.length} (${percent.toFixed(1)}%)</p>${saved?'<span style="color:#0f7b3a;">✅ Score recorded in Google Sheets</span>':'<span>⚠️ Local copy saved</span>'}</div>`;
-        
-        // Hide submit button after submission
-        const submitContainer = document.getElementById("submitContainer");
-        if (submitContainer) submitContainer.classList.add("hidden");
-        
+        await saveScoreToSheet(currentUser, currentUserPassword, score, globalQuestions.length, percent.toFixed(1), status);
+        document.getElementById("result").innerHTML = `<div style="background:${percent>=50?'#d1fae5':'#fee2e2'}; padding:20px; border-radius:32px; text-align:center;"><h2>${percent>=50?'🎉 PASSED!':'📉 FAILED!'}</h2><p style="font-size:2.2rem;">${score}/${globalQuestions.length} (${percent.toFixed(1)}%)</p></div>`;
+        document.getElementById("submitContainer").classList.add("hidden");
         updateStats();
         await loadScoresFromSheet();
     }
     
-    // ========== ORIGINAL HELPER FUNCTIONS (preserved) ==========
+    // ========== BULK UPLOAD - FULLY FUNCTIONAL ==========
+    async function uploadFileToSheet(replaceMode) {
+        const fileInput = document.getElementById("fileInput");
+        const file = fileInput.files[0];
+        if (!file) {
+            alert("📁 Please select a .txt file first");
+            return;
+        }
+        const progressDiv = document.getElementById("uploadProgress");
+        progressDiv.innerHTML = '<div class="progress-bar"><div class="progress-fill" style="width:10%">📖 Reading file...</div></div>';
+        
+        const reader = new FileReader();
+        reader.onload = async function(ev) {
+            const text = ev.target.result;
+            const blocks = text.split(/\n\s*\n/);
+            let parsedQuestions = [];
+            
+            for (let block of blocks) {
+                if (!block.trim()) continue;
+                const lines = block.split('\n');
+                let q = "", opts = ["", "", "", ""], ansLetter = "";
+                for (let line of lines) {
+                    line = line.trim();
+                    if (line.startsWith("Q:") || line.startsWith("Q:")) q = line.substring(2).trim();
+                    else if (line.startsWith("A:")) opts[0] = line.substring(2).trim();
+                    else if (line.startsWith("B:")) opts[1] = line.substring(2).trim();
+                    else if (line.startsWith("C:")) opts[2] = line.substring(2).trim();
+                    else if (line.startsWith("D:")) opts[3] = line.substring(2).trim();
+                    else if (line.startsWith("ANS:")) ansLetter = line.substring(4).trim().toUpperCase();
+                }
+                if (q && opts[0] && opts[1] && opts[2] && opts[3] && "ABCD".includes(ansLetter)) {
+                    const answerIndex = "ABCD".indexOf(ansLetter);
+                    parsedQuestions.push({
+                        question: q,
+                        optA: opts[0],
+                        optB: opts[1],
+                        optC: opts[2],
+                        optD: opts[3],
+                        answer: opts[answerIndex]
+                    });
+                }
+            }
+            
+            if (parsedQuestions.length === 0) {
+                progressDiv.innerHTML = '<span style="color:#e74c3c;">❌ No valid questions found. Check format (Q:, A:, B:, C:, D:, ANS:).</span>';
+                return;
+            }
+            
+            if (replaceMode) {
+                progressDiv.innerHTML = '<div class="progress-bar"><div class="progress-fill" style="width:20%">🗑️ Deleting existing questions...</div></div>';
+                await fetch(`${SCRIPT_URL}?action=delete`);
+                await new Promise(r => setTimeout(r, 500));
+            }
+            
+            let successCount = 0;
+            for (let i = 0; i < parsedQuestions.length; i++) {
+                const qb = parsedQuestions[i];
+                const percentDone = Math.round(((i + 1) / parsedQuestions.length) * 100);
+                progressDiv.innerHTML = `<div class="progress-bar"><div class="progress-fill" style="width:${percentDone}%">📤 Uploading ${i+1}/${parsedQuestions.length} (${percentDone}%)</div></div>`;
+                
+                const url = `${SCRIPT_URL}?action=add&question=${encodeURIComponent(qb.question)}&optA=${encodeURIComponent(qb.optA)}&optB=${encodeURIComponent(qb.optB)}&optC=${encodeURIComponent(qb.optC)}&optD=${encodeURIComponent(qb.optD)}&answer=${encodeURIComponent(qb.answer)}`;
+                try {
+                    const res = await fetch(url);
+                    const result = await res.json();
+                    if (result.success) successCount++;
+                } catch(e) { console.error(e); }
+                await new Promise(r => setTimeout(r, 50));
+            }
+            
+            progressDiv.innerHTML = `<span style="color:#10b981;">✅ Upload complete! ${successCount}/${parsedQuestions.length} questions imported successfully.</span>`;
+            setTimeout(() => { progressDiv.innerHTML = ""; }, 4000);
+            refreshQuestions();
+            updateStats();
+            fileInput.value = "";
+        };
+        reader.readAsText(file, "UTF-8");
+    }
+    
+    async function loadSampleQuestions() {
+        if (confirm("Load 5 demo questions? (This will REPLACE all existing questions)")) {
+            await fetch(`${SCRIPT_URL}?action=delete`);
+            let samples = [
+                {question:"What is the capital of Ethiopia?", optA:"Addis Ababa", optB:"Nairobi", optC:"Cairo", optD:"Kampala", answer:"Addis Ababa"},
+                {question:"Who developed the theory of relativity?", optA:"Newton", optB:"Einstein", optC:"Galileo", optD:"Tesla", answer:"Einstein"},
+                {question:"What is 9 x 8 ?", optA:"72", optB:"64", optC:"81", optD:"56", answer:"72"},
+                {question:"Which planet is the largest?", optA:"Mars", optB:"Earth", optC:"Jupiter", optD:"Saturn", answer:"Jupiter"},
+                {question:"HTML stands for?", optA:"Hyper Text Markup Language", optB:"High Tech Modern Language", optC:"Hyper Transfer Markup", optD:"None", answer:"Hyper Text Markup Language"}
+            ];
+            for(let s of samples){
+                const url = `${SCRIPT_URL}?action=add&question=${encodeURIComponent(s.question)}&optA=${encodeURIComponent(s.optA)}&optB=${encodeURIComponent(s.optB)}&optC=${encodeURIComponent(s.optC)}&optD=${encodeURIComponent(s.optD)}&answer=${encodeURIComponent(s.answer)}`;
+                await fetch(url);
+                await new Promise(r=>setTimeout(r,50));
+            }
+            alert("✅ 5 demo questions loaded!");
+            refreshQuestions();
+            updateStats();
+        }
+    }
+    
+    // ========== EXISTING HELPER FUNCTIONS ==========
     async function loadQuestionsFromSheet() {
         try {
             document.getElementById("syncStatus").innerHTML = "🔄 Fetching question bank...";
@@ -577,44 +650,25 @@
             globalQuestions = data;
             document.getElementById("syncStatus").innerHTML = `✅ Loaded ${data.length} questions | Ready`;
             return data;
-        } catch(e) { document.getElementById("syncStatus").innerHTML = "⚠️ Offline mode | Retrying..."; return globalQuestions.length ? globalQuestions : []; }
+        } catch(e) { document.getElementById("syncStatus").innerHTML = "⚠️ Offline mode"; return globalQuestions.length ? globalQuestions : []; }
     }
     
-    async function addQuestionToSheet() {
-        if(isAdding) return;
-        const q = document.getElementById("newQuestion").value.trim();
-        const a = document.getElementById("optA").value.trim(), b = document.getElementById("optB").value.trim(), c = document.getElementById("optC").value.trim(), d = document.getElementById("optD").value.trim();
-        const correctLetter = document.getElementById("correctAnswer").value;
-        if(!q || !a || !b || !c || !d || !correctLetter) { document.getElementById("addMessage").innerHTML = '<span style="color:#e74c3c;">❌ Fill all fields</span>'; return; }
-        let ansText = "";
-        if(correctLetter === "A") ansText = a; else if(correctLetter === "B") ansText = b; else if(correctLetter === "C") ansText = c; else ansText = d;
-        isAdding = true; document.getElementById("addButton").disabled = true;
-        document.getElementById("addMessage").innerHTML = '<span style="color:#1e3c72;">⏳ Submitting...</span>';
-        try {
-            const url = `${SCRIPT_URL}?action=add&question=${encodeURIComponent(q)}&optA=${encodeURIComponent(a)}&optB=${encodeURIComponent(b)}&optC=${encodeURIComponent(c)}&optD=${encodeURIComponent(d)}&answer=${encodeURIComponent(ansText)}`;
-            const res = await fetch(url); const result = await res.json();
-            if(result.success) { document.getElementById("addMessage").innerHTML = '<span style="color:#10b981;">✅ Question added!</span>'; document.getElementById("newQuestion").value = ""; document.getElementById("optA").value = ""; document.getElementById("optB").value = ""; document.getElementById("optC").value = ""; document.getElementById("optD").value = ""; document.getElementById("correctAnswer").value = ""; refreshQuestions(); updateStats(); }
-            else { document.getElementById("addMessage").innerHTML = '<span style="color:#e74c3c;">❌ Server error</span>'; }
-        } catch(e) { document.getElementById("addMessage").innerHTML = '<span style="color:#e74c3c;">❌ Connection failed</span>'; }
-        finally { isAdding = false; document.getElementById("addButton").disabled = false; setTimeout(()=>{ document.getElementById("addMessage").innerHTML=""; },2500); }
-    }
-    
+    async function addQuestionToSheet() { /* kept functional */ if(isAdding) return; const q = document.getElementById("newQuestion").value.trim(); const a = document.getElementById("optA").value.trim(), b = document.getElementById("optB").value.trim(), c = document.getElementById("optC").value.trim(), d = document.getElementById("optD").value.trim(); const correctLetter = document.getElementById("correctAnswer").value; if(!q || !a || !b || !c || !d || !correctLetter) { document.getElementById("addMessage").innerHTML = '<span style="color:#e74c3c;">❌ Fill all fields</span>'; return; } let ansText = ""; if(correctLetter === "A") ansText = a; else if(correctLetter === "B") ansText = b; else if(correctLetter === "C") ansText = c; else ansText = d; isAdding = true; document.getElementById("addButton").disabled = true; document.getElementById("addMessage").innerHTML = '<span>⏳ Submitting...</span>'; try { const url = `${SCRIPT_URL}?action=add&question=${encodeURIComponent(q)}&optA=${encodeURIComponent(a)}&optB=${encodeURIComponent(b)}&optC=${encodeURIComponent(c)}&optD=${encodeURIComponent(d)}&answer=${encodeURIComponent(ansText)}`; const res = await fetch(url); const result = await res.json(); if(result.success) { document.getElementById("addMessage").innerHTML = '<span style="color:#10b981;">✅ Question added!</span>'; document.getElementById("newQuestion").value = ""; document.getElementById("optA").value = ""; document.getElementById("optB").value = ""; document.getElementById("optC").value = ""; document.getElementById("optD").value = ""; document.getElementById("correctAnswer").value = ""; refreshQuestions(); updateStats(); } else { document.getElementById("addMessage").innerHTML = '<span style="color:#e74c3c;">❌ Server error</span>'; } } catch(e) { document.getElementById("addMessage").innerHTML = '<span style="color:#e74c3c;">❌ Connection failed</span>'; } finally { isAdding = false; document.getElementById("addButton").disabled = false; setTimeout(()=>{ document.getElementById("addMessage").innerHTML=""; },2000); } }
     async function deleteAllQuestions() { if(confirm("⚠️ PERMANENTLY delete ALL questions?")){ await fetch(`${SCRIPT_URL}?action=delete`); alert("All questions erased."); refreshQuestions(); updateStats(); } }
-    async function clearAllQuestionsFromSheet() { await fetch(`${SCRIPT_URL}?action=delete`); }
     async function loadScoresFromSheet() { try { const res = await fetch(`${SCRIPT_URL}?action=getScores`); allScores = await res.json(); displayScoresTable(); updateStats(); return allScores; } catch(e) { return []; } }
-    function displayScoresTable() { let filterVal = document.getElementById("scoreFilter")?.value || "all"; let search = document.getElementById("scoreSearch")?.value.toLowerCase() || ""; let filtered = allScores.filter(s => (filterVal === "all" || s.username === filterVal) && s.username.toLowerCase().includes(search)); let tbody = document.getElementById("scoresTableBody"); if(!tbody) return; if(filtered.length===0) tbody.innerHTML = '<tr><td colspan="6">📭 No records</td></tr>'; else { tbody.innerHTML = ""; filtered.forEach(sc=>{ let cls = parseFloat(sc.percentage)>=50 ? 'pass' : 'fail'; tbody.innerHTML += `<tr><td><strong>${escapeHtml(sc.username)}</strong>${sc.password ? '' : ''}</td><td>${sc.score}</td><td>${sc.total}</td><td>${sc.percentage}%</td><td class="${cls}">${sc.status}</td><td>${new Date(sc.examDate).toLocaleDateString()}</td></tr>`; }); } }
+    function displayScoresTable() { let filterVal = document.getElementById("scoreFilter")?.value || "all"; let search = document.getElementById("scoreSearch")?.value.toLowerCase() || ""; let filtered = allScores.filter(s => (filterVal === "all" || s.username === filterVal) && s.username.toLowerCase().includes(search)); let tbody = document.getElementById("scoresTableBody"); if(!tbody) return; if(filtered.length===0) tbody.innerHTML = '|<td colspan="6">📭 No records</td>|'; else { tbody.innerHTML = ""; filtered.forEach(sc=>{ let cls = parseFloat(sc.percentage)>=50 ? 'pass' : 'fail'; tbody.innerHTML += `<tr><td><strong>${escapeHtml(sc.username)}</strong></td><td>${sc.score}</td><td>${sc.total}</td><td>${sc.percentage}%</td><td class="${cls}">${sc.status}</td><td>${new Date(sc.examDate).toLocaleDateString()}</td></tr>`; }); } }
     async function saveScoreToSheet(username, password, score, total, percent, status) { try { const url = `${SCRIPT_URL}?action=submitScore&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}&score=${score}&total=${total}&percentage=${percent}&status=${encodeURIComponent(status)}`; const res = await fetch(url); const data = await res.json(); return data.success; } catch(e) { return false; } }
     async function refreshQuestions() { await loadQuestionsFromSheet(); const qList = document.getElementById("questionList"); if(qList){ if(globalQuestions.length===0) qList.innerHTML="<p>📭 No questions found</p>"; else { let html=""; globalQuestions.forEach((q,i)=>{ html+=`<div class="question-card"><div><strong>Q${i+1}: ${q.q}</strong><br>A:${q.options[0]} | B:${q.options[1]} | C:${q.options[2]} | D:${q.options[3]}<br><span style="color:#0f7b3a;">✓ ${q.answer}</span></div><button class="delete-btn" onclick="deleteSingleQuestion(${i})">🗑️ Delete</button></div>`; }); qList.innerHTML=html; } } updateStats(); }
-    async function deleteSingleQuestion(idx) { if(!confirm("Delete this question?")) return; let qs = await loadQuestionsFromSheet(); let updated = qs.filter((_,i)=> i !== idx); await fetch(`${SCRIPT_URL}?action=delete`); for(let q of updated) { const url = `${SCRIPT_URL}?action=add&question=${encodeURIComponent(q.q)}&optA=${encodeURIComponent(q.options[0])}&optB=${encodeURIComponent(q.options[1])}&optC=${encodeURIComponent(q.options[2])}&optD=${encodeURIComponent(q.options[3])}&answer=${encodeURIComponent(q.answer)}`; await fetch(url); await new Promise(r=>setTimeout(r,40)); } alert(`✔️ Deleted.`); refreshQuestions(); updateStats(); }
+    async function deleteSingleQuestion(idx) { if(!confirm("Delete?")) return; let qs = await loadQuestionsFromSheet(); let updated = qs.filter((_,i)=> i !== idx); await fetch(`${SCRIPT_URL}?action=delete`); for(let q of updated) { const url = `${SCRIPT_URL}?action=add&question=${encodeURIComponent(q.q)}&optA=${encodeURIComponent(q.options[0])}&optB=${encodeURIComponent(q.options[1])}&optC=${encodeURIComponent(q.options[2])}&optD=${encodeURIComponent(q.options[3])}&answer=${encodeURIComponent(q.answer)}`; await fetch(url); await new Promise(r=>setTimeout(r,40)); } refreshQuestions(); updateStats(); }
     function loadLocalData(type) { return JSON.parse(localStorage.getItem(type) || "[]"); }
     function saveLocalData(type,data){ localStorage.setItem(type,JSON.stringify(data)); }
-    function showHomeSection(){ document.getElementById('homeSection').classList.remove('hidden'); document.getElementById('studentSection').classList.add('hidden'); document.getElementById('adminSection').classList.add('hidden'); if(examTimerInterval) clearInterval(examTimerInterval); }
+    function showHomeSection(){ document.getElementById('homeSection').classList.remove('hidden'); document.getElementById('studentSection').classList.add('hidden'); document.getElementById('adminSection').classList.add('hidden'); stopTimer(); }
     function showStudentSection(){ document.getElementById('homeSection').classList.add('hidden'); document.getElementById('studentSection').classList.remove('hidden'); document.getElementById('adminSection').classList.add('hidden'); showStudentLoginSection(); }
     function showAdminSection(){ document.getElementById('homeSection').classList.add('hidden'); document.getElementById('studentSection').classList.add('hidden'); document.getElementById('adminSection').classList.remove('hidden'); document.getElementById('adminLogin').classList.remove('hidden'); document.getElementById('adminDashboard').classList.add('hidden'); }
     function showStudentLoginSection(){ document.getElementById('studentLogin').classList.remove('hidden'); document.getElementById('studentRegister').classList.add('hidden'); document.getElementById('studentDashboard').classList.add('hidden'); stopTimer(); }
     function showStudentRegister(){ document.getElementById('studentLogin').classList.add('hidden'); document.getElementById('studentRegister').classList.remove('hidden'); }
     function showStudentExam(){ document.getElementById('studentExamArea').classList.remove('hidden'); document.getElementById('studentHistoryArea').classList.add('hidden'); if(globalQuestions.length===0) loadQuestionsFromSheet().then(()=>loadExam()); else loadExam(); }
-    function showStudentHistory(){ document.getElementById('studentExamArea').classList.add('hidden'); document.getElementById('studentHistoryArea').classList.remove('hidden'); loadStudentHistory(); if(examTimerInterval) clearInterval(examTimerInterval); examActive=false; }
+    function showStudentHistory(){ document.getElementById('studentExamArea').classList.add('hidden'); document.getElementById('studentHistoryArea').classList.remove('hidden'); loadStudentHistory(); stopTimer(); }
     function registerUser(){ let students=loadLocalData("students"); let u=document.getElementById("regUser").value.trim(), p=document.getElementById("regPass").value.trim(); if(!u||!p){alert("Enter credentials");return;} if(students.find(s=>s.username===u)){alert("Username exists");return;} students.push({username:u,password:p,registered:new Date().toISOString()}); saveLocalData("students",students); alert("✅ Account created!"); showStudentLoginSection(); updateStats(); }
     async function studentLogin(){ let students=loadLocalData("students"); let u=document.getElementById("sUser").value.trim(), p=document.getElementById("sPass").value.trim(); let student=students.find(s=>s.username===u && s.password===p); if(student){ currentUser=u; currentUserPassword=p; document.getElementById("studentName").innerText=u; document.getElementById("studentLogin").classList.add('hidden'); document.getElementById("studentDashboard").classList.remove('hidden'); await loadQuestionsFromSheet(); showStudentExam(); } else { alert("❌ Invalid login"); } }
     async function loadStudentHistory(){ await loadScoresFromSheet(); let userScores=allScores.filter(s=>s.username===currentUser); let html=""; if(userScores.length===0) html="<p>📭 No exams yet</p>"; else userScores.forEach((sc,i)=>{ let cls=parseFloat(sc.percentage)>=50?'pass':'fail'; html+=`<div class="score-card"><div><strong>Attempt #${i+1}</strong> - ${new Date(sc.examDate).toLocaleString()}</div><div>Score: ${sc.score}/${sc.total} (${sc.percentage}%) <span class="${cls}">${sc.status}</span></div></div>`; }); document.getElementById("studentHistoryList").innerHTML=html; }
@@ -625,8 +679,6 @@
     function searchStudents(){ loadStudentsList(); }
     function filterScores(){ displayScoresTable(); }
     function showAdminTab(tab, el){ document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active')); el.classList.add('active'); document.querySelectorAll('.admin-content').forEach(c=>c.classList.add('hidden')); document.getElementById(`admin${tab.charAt(0).toUpperCase()+tab.slice(1)}`).classList.remove('hidden'); if(tab==='questions') refreshQuestions(); if(tab==='scores') loadScoresFromSheet(); if(tab==='students') loadStudentsList(); }
-    async function uploadFileToSheet(replace) { alert("Upload function ready - use bulk format"); }
-    async function loadSampleQuestions() { await fetch(`${SCRIPT_URL}?action=delete`); let samples = [ {question:"What is the capital of Ethiopia?", optA:"Addis Ababa", optB:"Nairobi", optC:"Cairo", optD:"Kampala", answer:"Addis Ababa"}, {question:"Who developed relativity?", optA:"Newton", optB:"Einstein", optC:"Galileo", optD:"Tesla", answer:"Einstein"}, {question:"What is 9 x 8 ?", optA:"72", optB:"64", optC:"81", optD:"56", answer:"72"}, {question:"Which planet is largest?", optA:"Mars", optB:"Earth", optC:"Jupiter", optD:"Saturn", answer:"Jupiter"}, {question:"HTML stands for?", optA:"Hyper Text Markup Language", optB:"High Tech Modern Language", optC:"Hyper Transfer Markup", optD:"None", answer:"Hyper Text Markup Language"} ]; for(let s of samples){ const url = `${SCRIPT_URL}?action=add&question=${encodeURIComponent(s.question)}&optA=${encodeURIComponent(s.optA)}&optB=${encodeURIComponent(s.optB)}&optC=${encodeURIComponent(s.optC)}&optD=${encodeURIComponent(s.optD)}&answer=${encodeURIComponent(s.answer)}`; await fetch(url); await new Promise(r=>setTimeout(r,30)); } alert("Sample questions loaded!"); refreshQuestions(); }
     async function updateStats(){ let questions=await loadQuestionsFromSheet(); let students=loadLocalData("students"); document.getElementById("homeTotalQuestions").innerText=questions.length; document.getElementById("homeTotalStudents").innerText=students.length; document.getElementById("homeTotalExams").innerText=allScores.length; document.getElementById("adminTotalQuestions").innerText=questions.length; document.getElementById("adminTotalStudents").innerText=students.length; document.getElementById("adminTotalExams").innerText=allScores.length; if(allScores.length>0){ let avg=allScores.reduce((sum,s)=>sum+parseFloat(s.percentage),0)/allScores.length; document.getElementById("adminAvgScore").innerText=avg.toFixed(1)+'%'; } let filter=document.getElementById("scoreFilter"); if(filter){ filter.innerHTML='<option value="all">All Students</option>'; students.forEach(s=>{ filter.innerHTML+=`<option value="${escapeHtml(s.username)}">${escapeHtml(s.username)}</option>`;}); } }
     function escapeHtml(str){ return str.replace(/[&<>]/g,function(m){if(m==='&')return'&amp;';if(m==='<')return'&lt;';if(m==='>')return'&gt;';return m;}); }
     function logout(){ if(confirm("Exit session?")) location.reload(); }
