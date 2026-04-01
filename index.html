@@ -56,6 +56,100 @@
         .btn-purple { background: #8e44ad; color: white; }
         .btn-secondary { background: #95a5a6; color: white; }
         
+        /* Toggle Switch Styles */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #10b981;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        .exam-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 600;
+        }
+        .status-badge {
+            padding: 6px 15px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .status-enabled {
+            background: #d1fae5;
+            color: #0f7b3a;
+        }
+        .status-disabled {
+            background: #fee2e2;
+            color: #c0392b;
+        }
+        
+        .control-card {
+            background: linear-gradient(135deg, #fef9e3, #fff3cd);
+            padding: 20px;
+            border-radius: 28px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            border-left: 6px solid #f59e0b;
+        }
+        .control-card-answers {
+            background: linear-gradient(135deg, #e6f7ff, #d4f1f9);
+            border-left-color: #8b5cf6;
+        }
+        
+        .validation-error {
+            color: #dc2626;
+            font-size: 12px;
+            margin-top: -8px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .password-strength {
+            font-size: 12px;
+            margin-top: -8px;
+            margin-bottom: 10px;
+        }
+        .strength-weak { color: #dc2626; }
+        .strength-medium { color: #f59e0b; }
+        .strength-strong { color: #10b981; }
+        
         input, select, textarea { 
             width: 100%; 
             padding: 14px 16px; 
@@ -66,6 +160,7 @@
             transition: 0.2s;
         }
         input:focus, select:focus { border-color: #1e3c72; outline: none; box-shadow: 0 0 0 3px rgba(30,60,114,0.2);}
+        input.error { border-color: #dc2626; }
         
         .stats-grid {
             display: grid;
@@ -126,6 +221,61 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
         
+        .review-card {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 24px;
+            border-left: 6px solid #8b5cf6;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .review-question {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            color: #1e3c72;
+        }
+        .review-options {
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 16px;
+            margin: 10px 0;
+        }
+        .review-option {
+            padding: 6px 12px;
+            margin: 4px 0;
+            border-radius: 12px;
+        }
+        .review-option-correct {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+        }
+        .review-option-user {
+            background: #eef2ff;
+            border-left: 4px solid #1e3c72;
+        }
+        .review-answer {
+            padding: 8px 12px;
+            margin: 8px 0;
+            border-radius: 12px;
+        }
+        .review-correct {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+        }
+        .review-wrong {
+            background: #fee2e2;
+            border-left: 4px solid #dc2626;
+        }
+        .correct-badge {
+            background: #10b981;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        
         .question-dot { 
             width: 42px; 
             height: 42px; 
@@ -142,7 +292,7 @@
         .question-dot.unanswered { background: #e2e8f0; color: #334155; }
         .question-dot.current { border: 3px solid #1e3c72; transform: scale(1.08); background: #1e3c72; color: white; }
         
-        .login-container { max-width: 450px; margin: 20px auto; background: white; padding: 30px; border-radius: 48px; box-shadow: 0 20px 35px rgba(0,0,0,0.1);}
+        .login-container { max-width: 500px; margin: 20px auto; background: white; padding: 30px; border-radius: 48px; box-shadow: 0 20px 35px rgba(0,0,0,0.1);}
         
         .sync-status {
             background: #0f172a;
@@ -210,7 +360,6 @@
         }
         .button-group { display: flex; gap: 12px; flex-wrap: wrap; margin: 18px 0; }
         
-        /* TIMER STYLES */
         .timer-panel {
             background: #0f172a;
             color: #facc15;
@@ -255,16 +404,33 @@
             margin-top: 15px;
             border: 1px solid #cbd5e1;
         }
-        .loading-spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(0,0,0,.1);
-            border-radius: 50%;
-            border-top-color: #1e3c72;
-            animation: spin 1s ease-in-out infinite;
+        .disabled-exam {
+            text-align: center;
+            padding: 50px;
+            background: #fef2f2;
+            border-radius: 32px;
+            color: #991b1b;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        .view-answer-btn {
+            background: #8b5cf6;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 20px;
+            font-size: 1rem;
+        }
+        .review-modal {
+            background: white;
+            border-radius: 32px;
+            padding: 25px;
+            margin-top: 25px;
+            max-height: 600px;
+            overflow-y: auto;
+            border: 2px solid #8b5cf6;
+        }
         @media (max-width: 700px) { .box { padding: 20px; } .btn { padding: 8px 16px; } .timer-panel { font-size: 1.2rem; } }
     </style>
 </head>
@@ -272,7 +438,7 @@
 <div class="container">
     <div class="header">
         <h1>🏫 AYER AMBA SECONDARY SCHOOL <br> ONLINE NATIONAL EXAM TRAINING CENTER FOR GRADE 12 STUDENTS</h1>
-        <p style="color: #2c3e50;">⚡ Smart Assessment | Timed Mode (1.5 min per question)</p>
+        <p style="color: #2c3e50;">⚡ Smart Assessment</p>
     </div>
     <div class="box">
         <div class="sync-status" id="syncStatus">🔄 Connecting to secure cloud database...</div>
@@ -290,7 +456,7 @@
                 <button class="btn btn-warning" onclick="showAdminSection()">🔐 ADMIN PANEL</button>
             </div>
             <div style="background: #eef2ff; padding: 20px; border-radius: 32px; text-align: center;">
-                <p>📢 Students: Register with any username/password. Timer: 1.5 min per question. Submit button appears ONLY on last question.</p>
+                <p>📢 Students: Register with any username/password</p>
                 <p>⚡ Developed by <strong>TOLA GALATA AYANSA</strong> | 📞 +251976761165 | ✉️ @tolahep</p>
             </div>
         </div>
@@ -307,8 +473,11 @@
             </div>
             <div id="studentRegister" class="hidden login-container">
                 <h2>📝 Create Account</h2>
-                <input type="text" id="regUser" placeholder="Choose Username">
-                <input type="password" id="regPass" placeholder="Password">
+                <input type="text" id="regUser" placeholder="Username (3-15 characters)" autocomplete="off">
+                <span id="usernameError" class="validation-error"></span>
+                <input type="password" id="regPass" placeholder="Password (min 6 chars: letter + number + special char)">
+                <span id="passwordError" class="validation-error"></span>
+                <div id="passwordStrength" class="password-strength"></div>
                 <button class="btn btn-success" onclick="registerUser()">Register</button>
                 <button class="btn btn-secondary" onclick="showStudentLoginSection()">Back to Login</button>
             </div>
@@ -321,6 +490,11 @@
                 <div id="studentExamArea" class="hidden">
                     <h3>📖 Online Examination</h3>
                     <div id="timerDisplay" class="timer-panel">⏱️ Time Left: --:--</div>
+                    <div id="examDisabledMessage" class="disabled-exam hidden">
+                        <h3>⛔ EXAM IS CURRENTLY DISABLED</h3>
+                        <p>The administrator has disabled the exam. Please check back later.</p>
+                        <button class="btn btn-primary" onclick="showStudentHistory()">View Your History</button>
+                    </div>
                     <div id="noQuestions" class="hidden" style="background:#fee2e2; padding:20px; border-radius:28px; color:#b91c1c;">⚠️ No questions available. Please contact admin.</div>
                     <div id="examContent">
                         <div class="exam-header">
@@ -340,6 +514,7 @@
                             <button class="btn btn-success" id="submitExamBtn" onclick="submitExam()" style="font-size:1.1rem; padding: 14px 40px;">✅ SUBMIT EXAM</button>
                         </div>
                         <div id="result" style="margin-top: 20px;"></div>
+                        <div id="reviewSection" class="hidden" style="margin-top: 25px;"></div>
                     </div>
                 </div>
                 <div id="studentHistoryArea" class="hidden">
@@ -354,13 +529,30 @@
         <div id="adminSection" class="hidden">
             <div id="adminLogin" class="login-container">
                 <h2>🔐 Administrator Access</h2>
-                <input type="text" id="aUser" placeholder="Admin Username" value="">
-                <input type="password" id="aPass" placeholder="Password" value="">
+                <input type="text" id="aUser" placeholder="Admin Username">
+                <input type="password" id="aPass" placeholder="Password">
                 <button class="btn btn-warning" onclick="adminLogin()">Login</button>
                 <button class="btn btn-secondary" onclick="showHomeSection()">Back</button>
             </div>
             <div id="adminDashboard" class="hidden">
                 <h2>🛠️ Admin Control Panel</h2>
+                
+                <div class="control-card">
+                    <div><strong>🔘 EXAM ACCESS CONTROL</strong><br><small>When OFF, students cannot take exams</small></div>
+                    <div class="exam-status">
+                        <label class="toggle-switch"><input type="checkbox" id="examToggleSwitch" onchange="toggleExamAccess()"><span class="slider"></span></label>
+                        <span id="examStatusBadge" class="status-badge status-disabled">⚪ DISABLED</span>
+                    </div>
+                </div>
+                
+                <div class="control-card control-card-answers">
+                    <div><strong>🔍 ANSWERS VIEW CONTROL</strong><br><small>When ON, students can view correct answers after exam</small></div>
+                    <div class="exam-status">
+                        <label class="toggle-switch"><input type="checkbox" id="answersToggleSwitch" onchange="toggleAnswersView()"><span class="slider"></span></label>
+                        <span id="answersStatusBadge" class="status-badge status-disabled">⚪ HIDDEN</span>
+                    </div>
+                </div>
+                
                 <div class="admin-tabs">
                     <div class="admin-tab active" onclick="showAdminTab('overview', this)">📊 Overview</div>
                     <div class="admin-tab" onclick="showAdminTab('add', this)">➕ Add Question</div>
@@ -369,39 +561,12 @@
                     <div class="admin-tab" onclick="showAdminTab('students', this)">👥 Students</div>
                     <div class="admin-tab" onclick="showAdminTab('scores', this)">📈 Score Records</div>
                 </div>
-                <div id="adminOverview" class="admin-content"><h3>System Overview</h3><div class="stats-grid"><div class="stat-card"><div class="stat-number" id="adminTotalQuestions">0</div><div>Questions</div></div><div class="stat-card"><div class="stat-number" id="adminTotalStudents">0</div><div>Students</div></div><div class="stat-card"><div class="stat-number" id="adminTotalExams">0</div><div>Exams</div></div><div class="stat-card"><div class="stat-number" id="adminAvgScore">0%</div><div>Avg Score</div></div></div></div>
-                <div id="adminAdd" class="admin-content hidden"><h3>➕ Insert New Question</h3><div class="add-question-form"><input type="text" id="newQuestion" placeholder="Enter question text"><input type="text" id="optA" placeholder="Option A"><input type="text" id="optB" placeholder="Option B"><input type="text" id="optC" placeholder="Option C"><input type="text" id="optD" placeholder="Option D"><select id="correctAnswer"><option value="">-- Correct choice --</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select><button class="btn btn-success" id="addButton" onclick="addQuestionToSheet()">📤 Push to Database</button></div><div id="addMessage" style="margin-top:12px;"></div></div>
-                <div id="adminUpload" class="admin-content hidden">
-                    <h3>📂 Mass Import Questions (TXT format)</h3>
-                    <div class="upload-area">
-                        <p><strong>📝 Format Requirements:</strong> Each question block separated by blank line. Use Q:, A:, B:, C:, D:, ANS: format.</p>
-                        <div class="format-example">
-                            <strong>Example:</strong><br>
-                            Q: What is the value of x if 2x + 6 = 14?<br>
-                            A: 2<br>
-                            B: 3<br>
-                            C: 4<br>
-                            D: 5<br>
-                            ANS: C<br>
-                            <br>
-                            Q: Simplify: 3² + 4²<br>
-                            A: 12<br>
-                            B: 25<br>
-                            C: 49<br>
-                            D: 7<br>
-                            ANS: B
-                        </div>
-                        <input type="file" id="fileInput" accept=".txt,.csv">
-                        <div class="button-group" style="justify-content: center; margin-top: 20px;">
-                            <button class="btn btn-danger" onclick="uploadFileToSheet(true)">🗑️ Replace All & Upload</button>
-                            <button class="btn btn-primary" onclick="uploadFileToSheet(false)">➕ Append to Existing</button>
-                        </div>
-                        <div id="uploadProgress" style="margin-top: 20px;"></div>
-                    </div>
-                </div>
+                <div id="adminOverview" class="admin-content"><h3>System Overview</h3><div class="stats-grid"><div class="stat-card"><div class="stat-number" id="adminTotalQuestions">0</div><div>Questions</div></div><div class="stat-card"><div class="stat-number" id="adminTotalStudents">0</div><div>Students</div></div><div class="stat-card"><div class="stat-number" id="adminTotalExams">0</div><div>Exams</div></div><div class="stat-card"><div class="stat-number" id="adminAvgScore">0%</div><div>Avg Score</div></div></div><div id="examControlStatus" style="margin-top:15px; padding:10px; background:#eef2ff; border-radius:20px;"><strong>📌 Current Settings:</strong><br><span id="adminExamStatus"></span><br><span id="adminAnswersStatus"></span></div></div>
+                <div id="adminAdd" class="admin-content hidden"><h3>➕ Insert New Question</h3><input type="text" id="newQuestion" placeholder="Enter question text"><input type="text" id="optA" placeholder="Option A"><input type="text" id="optB" placeholder="Option B"><input type="text" id="optC" placeholder="Option C"><input type="text" id="optD" placeholder="Option D"><select id="correctAnswer"><option value="">-- Correct choice --</option><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select><button class="btn btn-success" onclick="addQuestionToSheet()">📤 Push to Database</button><div id="addMessage" style="margin-top:12px;"></div></div>
+                <div id="adminUpload" class="admin-content hidden"><h3>📂 Mass Import Questions</h3><div class="upload-area"><p><strong>📝 Format:</strong> Q:, A:, B:, C:, D:, ANS:</p><div class="format-example"><strong>Example:</strong><br>Q: What is 2+2?<br>A: 3<br>B: 4<br>C: 5<br>D: 6<br>ANS: B</div><input type="file" id="fileInput" accept=".txt,.csv"><div class="button-group"><button class="btn btn-danger" onclick="uploadFileToSheet(true)">🗑️ Replace All</button><button class="btn btn-primary" onclick="uploadFileToSheet(false)">➕ Append</button></div><div id="uploadProgress"></div></div></div>
                 <div id="adminQuestions" class="admin-content hidden"><h3>📋 Manage Questions</h3><div class="button-group"><button class="btn btn-danger" onclick="deleteAllQuestions()">🗑️ Delete ALL</button><button class="btn btn-primary" onclick="refreshQuestions()">🔄 Refresh</button></div><div id="questionList"></div></div>
-                <div id="adminStudents" class="admin-content hidden"><h3>👥 Student Registry</h3><input type="text" id="studentSearch" placeholder="Search by name..." onkeyup="searchStudents()"><div class="button-group"><button class="btn btn-danger" onclick="deleteAllStudents()">⚠️ Delete All Students</button><button class="btn btn-primary" onclick="loadStudentsList()">⟳ Refresh</button></div><div id="studentList"></div></div>
-                <div id="adminScores" class="admin-content hidden"><h3>🏆 Scoreboard</h3><div class="search-box"><input type="text" id="scoreSearch" placeholder="Search student..." onkeyup="filterScores()"><select id="scoreFilter" onchange="filterScores()"><option value="all">All Students</option></select><button class="btn btn-primary" onclick="loadScoresFromSheet()">🔄 Sync Latest</button></div><div class="table-container"><table><thead><tr><th>Student</th><th>Score</th><th>Total</th><th>%</th><th>Result</th><th>Date</th></tr></thead><tbody id="scoresTableBody"></tbody></table></div></div>
+                <div id="adminStudents" class="admin-content hidden"><h3>👥 Student Registry</h3><div id="studentList"></div><button class="btn btn-danger" onclick="deleteAllStudents()">Delete All Students</button></div>
+                <div id="adminScores" class="admin-content hidden"><h3>🏆 Scoreboard</h3><input type="text" id="scoreSearch" placeholder="Search student..." onkeyup="filterScores()"><div class="table-container">\n<table>\n<thead><tr><th>Student</th><th>Score</th><th>Total</th><th>%</th><th>Result</th><th>Date</th></tr></thead>\n<tbody id="scoresTableBody"></tbody>\n</table>\n</div></div>
                 <button class="btn btn-danger" onclick="logout()" style="margin-top:25px;">Logout</button>
             </div>
         </div>
@@ -409,128 +574,163 @@
 </div>
 
 <script>
-    // ============================================
-    // GOOGLE APPS SCRIPT URL - CONFIGURED
-    // ============================================
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx7YWU5rDFCJz10kSP1qQ2722UtMO0LM0K_iaVgpBmZLcFDPqqczNp9NMGM1aj9MEM/exec";
     
     let currentUser = "", currentUserPassword = "";
     let currentQuestion = 0, answers = {}, examSubmitted = false, globalQuestions = [], allScores = [], isAdding = false;
     let examTimerInterval = null, timeRemainingSeconds = 0, examActive = false;
     
-    function calculateTotalMinutesFromQuestions(questionCount) {
-        if (questionCount === 0) return 0;
-        return Math.ceil(questionCount * 1.5);
+    let examAccessEnabled = localStorage.getItem("examAccessEnabled") === "true";
+    let answersViewEnabled = localStorage.getItem("answersViewEnabled") === "true";
+    
+    // Validation Functions
+    function validateUsername(username) {
+        if (username.length < 3 || username.length > 15) {
+            return { valid: false, message: "Username must be 3-15 characters long" };
+        }
+        if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+            return { valid: false, message: "Username can only contain letters, numbers, and underscore" };
+        }
+        return { valid: true, message: "" };
     }
+    
+    function validatePassword(password) {
+        if (password.length < 6) {
+            return { valid: false, message: "Password must be at least 6 characters long" };
+        }
+        if (!/[A-Za-z]/.test(password)) {
+            return { valid: false, message: "Password must contain at least one letter" };
+        }
+        if (!/[0-9]/.test(password)) {
+            return { valid: false, message: "Password must contain at least one number" };
+        }
+        if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+            return { valid: false, message: "Password must contain at least one special character (!@#$%^&* etc.)" };
+        }
+        return { valid: true, message: "Strong password!" };
+    }
+    
+    function checkPasswordStrength(password) {
+        let strength = 0;
+        if (password.length >= 6) strength++;
+        if (/[A-Za-z]/.test(password)) strength++;
+        if (/[0-9]/.test(password)) strength++;
+        if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) strength++;
+        
+        if (strength === 4) return { text: "Strong", class: "strength-strong" };
+        if (strength === 3) return { text: "Medium", class: "strength-medium" };
+        return { text: "Weak", class: "strength-weak" };
+    }
+    
+    document.addEventListener("DOMContentLoaded", function() {
+        const regPass = document.getElementById("regPass");
+        if(regPass) {
+            regPass.addEventListener("input", function() {
+                const strength = checkPasswordStrength(this.value);
+                const strengthDiv = document.getElementById("passwordStrength");
+                if(strengthDiv) {
+                    strengthDiv.innerHTML = `<span class="${strength.class}">🔒 Password Strength: ${strength.text}</span>`;
+                }
+            });
+        }
+    });
+    
+    function registerUser() {
+        let u = document.getElementById("regUser").value.trim();
+        let p = document.getElementById("regPass").value;
+        
+        // Validate username
+        const usernameValidation = validateUsername(u);
+        if (!usernameValidation.valid) {
+            document.getElementById("usernameError").innerHTML = usernameValidation.message;
+            document.getElementById("usernameError").style.display = "block";
+            return;
+        } else {
+            document.getElementById("usernameError").innerHTML = "";
+        }
+        
+        // Validate password
+        const passwordValidation = validatePassword(p);
+        if (!passwordValidation.valid) {
+            document.getElementById("passwordError").innerHTML = passwordValidation.message;
+            document.getElementById("passwordError").style.display = "block";
+            return;
+        } else {
+            document.getElementById("passwordError").innerHTML = "";
+        }
+        
+        let students = loadLocalData("students");
+        if(students.find(s => s.username === u)) {
+            alert("❌ Username already exists!");
+            return;
+        }
+        
+        students.push({username: u, password: p, registered: new Date().toISOString()});
+        saveLocalData("students", students);
+        alert("✅ Account created successfully!\nUsername: " + u + "\nPassword requirements met.");
+        showStudentLoginSection();
+        updateStats();
+    }
+    
+    function initSwitches() {
+        const examToggle = document.getElementById("examToggleSwitch");
+        const answersToggle = document.getElementById("answersToggleSwitch");
+        if(examToggle) examToggle.checked = examAccessEnabled;
+        if(answersToggle) answersToggle.checked = answersViewEnabled;
+        updateExamStatusDisplay();
+        updateAnswersStatusDisplay();
+    }
+    
+    function toggleExamAccess() { examAccessEnabled = document.getElementById("examToggleSwitch").checked; localStorage.setItem("examAccessEnabled", examAccessEnabled); updateExamStatusDisplay(); alert(examAccessEnabled ? "✅ Exam ENABLED" : "⛔ Exam DISABLED"); }
+    function toggleAnswersView() { answersViewEnabled = document.getElementById("answersToggleSwitch").checked; localStorage.setItem("answersViewEnabled", answersViewEnabled); updateAnswersStatusDisplay(); alert(answersViewEnabled ? "✅ Answers View ENABLED" : "⛔ Answers View DISABLED"); }
+    function updateExamStatusDisplay() { let b = document.getElementById("examStatusBadge"), a = document.getElementById("adminExamStatus"); if(b) { b.className = examAccessEnabled ? "status-badge status-enabled" : "status-badge status-disabled"; b.innerHTML = examAccessEnabled ? "🟢 ENABLED" : "🔴 DISABLED"; } if(a) a.innerHTML = examAccessEnabled ? '✅ Exam Access: <span style="color:#10b981;">ENABLED</span>' : '⛔ Exam Access: <span style="color:#c0392b;">DISABLED</span>'; }
+    function updateAnswersStatusDisplay() { let b = document.getElementById("answersStatusBadge"), a = document.getElementById("adminAnswersStatus"); if(b) { b.className = answersViewEnabled ? "status-badge status-enabled" : "status-badge status-disabled"; b.innerHTML = answersViewEnabled ? "🟢 VISIBLE" : "🔴 HIDDEN"; } if(a) a.innerHTML = answersViewEnabled ? '✅ Answers View: <span style="color:#10b981;">VISIBLE</span>' : '⛔ Answers View: <span style="color:#c0392b;">HIDDEN</span>'; }
+    function isExamAccessible() { return examAccessEnabled; }
+    function isAnswersViewAllowed() { return answersViewEnabled; }
+    
+    function calculateTotalMinutesFromQuestions(qc) { return qc === 0 ? 0 : Math.ceil(qc * 1.5); }
     
     function startTimer() {
         if (examTimerInterval) clearInterval(examTimerInterval);
         examTimerInterval = setInterval(() => {
             if (!examActive || examSubmitted) return;
-            if (timeRemainingSeconds <= 0) {
-                clearInterval(examTimerInterval);
-                examTimerInterval = null;
-                if (!examSubmitted) {
-                    alert("⏰ TIME IS UP! Your exam will be submitted automatically.");
-                    submitExam(true);
-                }
-            } else {
-                timeRemainingSeconds--;
-                updateTimerDisplay();
-                const timerDiv = document.getElementById("timerDisplay");
-                if (timeRemainingSeconds <= 300 && timerDiv && !timerDiv.classList.contains("timer-warning")) {
-                    timerDiv.classList.add("timer-warning");
-                } else if (timeRemainingSeconds > 300 && timerDiv && timerDiv.classList.contains("timer-warning")) {
-                    timerDiv.classList.remove("timer-warning");
-                }
-            }
+            if (timeRemainingSeconds <= 0) { clearInterval(examTimerInterval); examTimerInterval = null; if (!examSubmitted) { alert("⏰ TIME IS UP!"); submitExam(true); } }
+            else { timeRemainingSeconds--; updateTimerDisplay(); const td = document.getElementById("timerDisplay"); if (timeRemainingSeconds <= 300 && td) td.classList.add("timer-warning"); else if (td) td.classList.remove("timer-warning"); }
         }, 1000);
     }
     
-    function updateTimerDisplay() {
-        const timerDiv = document.getElementById("timerDisplay");
-        if (!timerDiv) return;
-        if (timeRemainingSeconds < 0) timeRemainingSeconds = 0;
-        const mins = Math.floor(timeRemainingSeconds / 60);
-        const secs = timeRemainingSeconds % 60;
-        timerDiv.innerHTML = `⏱️ Time Left: ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-    }
-    
+    function updateTimerDisplay() { let td = document.getElementById("timerDisplay"); if (!td) return; let mins = Math.floor(timeRemainingSeconds / 60), secs = timeRemainingSeconds % 60; td.innerHTML = `⏱️ Time Left: ${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`; }
     function stopTimer() { if (examTimerInterval) { clearInterval(examTimerInterval); examTimerInterval = null; } examActive = false; }
-    
-    function updateSubmitButtonVisibility() {
-        const submitContainer = document.getElementById("submitContainer");
-        if (!submitContainer) return;
-        if (!examSubmitted && globalQuestions.length > 0 && currentQuestion === globalQuestions.length - 1) {
-            submitContainer.classList.remove("hidden");
-        } else {
-            submitContainer.classList.add("hidden");
-        }
-    }
+    function updateSubmitButtonVisibility() { let sc = document.getElementById("submitContainer"); if (!sc) return; if (!examSubmitted && globalQuestions.length > 0 && currentQuestion === globalQuestions.length - 1) sc.classList.remove("hidden"); else sc.classList.add("hidden"); }
     
     function loadExam() {
-        if (!globalQuestions || globalQuestions.length === 0) {
-            document.getElementById("noQuestions").classList.remove('hidden');
-            document.getElementById("examContent").classList.add('hidden');
-            return;
-        }
-        document.getElementById("noQuestions").classList.add('hidden');
-        document.getElementById("examContent").classList.remove('hidden');
-        currentQuestion = 0;
-        answers = {};
-        examSubmitted = false;
-        globalQuestions.forEach((_, i) => answers[i] = null);
-        const totalMinutes = calculateTotalMinutesFromQuestions(globalQuestions.length);
-        timeRemainingSeconds = totalMinutes * 60;
-        examActive = true;
-        updateTimerDisplay();
-        if (examTimerInterval) clearInterval(examTimerInterval);
-        startTimer();
-        document.getElementById("result").innerHTML = "";
-        showQuestion();
-        updateSubmitButtonVisibility();
+        if (!isExamAccessible()) { document.getElementById("examDisabledMessage").classList.remove("hidden"); document.getElementById("noQuestions").classList.add("hidden"); document.getElementById("examContent").classList.add("hidden"); return; }
+        document.getElementById("examDisabledMessage").classList.add("hidden");
+        if (!globalQuestions.length) { document.getElementById("noQuestions").classList.remove("hidden"); document.getElementById("examContent").classList.add("hidden"); return; }
+        document.getElementById("noQuestions").classList.add("hidden"); document.getElementById("examContent").classList.remove("hidden");
+        document.getElementById("reviewSection").innerHTML = ""; document.getElementById("reviewSection").classList.add("hidden");
+        currentQuestion = 0; answers = {}; examSubmitted = false; globalQuestions.forEach((_, i) => answers[i] = null);
+        timeRemainingSeconds = calculateTotalMinutesFromQuestions(globalQuestions.length) * 60; examActive = true;
+        updateTimerDisplay(); if (examTimerInterval) clearInterval(examTimerInterval); startTimer();
+        document.getElementById("result").innerHTML = ""; showQuestion(); updateSubmitButtonVisibility();
     }
     
     function showQuestion() {
-        if (!globalQuestions.length) {
-            console.error("No questions loaded!");
-            return;
-        }
-        
+        if (!globalQuestions.length) return;
         let q = globalQuestions[currentQuestion];
-        
-        if (!q || !q.q || !q.options || !Array.isArray(q.options)) {
-            console.error("Invalid question structure at index", currentQuestion, q);
-            document.getElementById("questionText").innerText = "Error: Question data invalid";
-            document.getElementById("optionsContainer").innerHTML = "<p style='color:red'>⚠️ Question format error. Contact admin.</p>";
-            return;
-        }
-        
         document.getElementById("questionCounter").innerHTML = `<span style="background:#1e3c72; padding:8px 24px; border-radius:40px; color:white;">Question ${currentQuestion+1}/${globalQuestions.length}</span>`;
         document.getElementById("questionText").innerText = q.q;
-        
-        let html = "";
-        let letters = ['A', 'B', 'C', 'D'];
-        
+        let html = "", letters = ['A','B','C','D'];
         q.options.forEach((opt, i) => {
             if (!opt) opt = "[Option missing]";
-            let selected = (answers[currentQuestion] === opt) ? 'selected' : '';
-            let bgColor = selected ? '#eef2ff' : '#ffffff';
-            let borderColor = selected ? '#1e3c72' : '#e2e8f0';
-            html += `<div onclick="selectAnswer('${escapeHtml(opt).replace(/'/g, "\\'")}')" style="margin:12px 0; padding:14px; background:${bgColor}; border:2px solid ${borderColor}; border-radius:60px; cursor:pointer; font-weight:500;">${letters[i]}. ${escapeHtml(opt)}</div>`;
+            let selected = (answers[currentQuestion] === opt);
+            html += `<div onclick="selectAnswer('${escapeHtml(opt).replace(/'/g, "\\'")}')" style="margin:12px 0; padding:14px; background:${selected ? '#eef2ff' : '#ffffff'}; border:2px solid ${selected ? '#1e3c72' : '#e2e8f0'}; border-radius:60px; cursor:pointer; font-weight:500;">${letters[i]}. ${escapeHtml(opt)}</div>`;
         });
-        
         document.getElementById("optionsContainer").innerHTML = html;
         let answeredCount = Object.values(answers).filter(a => a !== null).length;
         document.getElementById("progressText").innerHTML = `📌 ${answeredCount}/${globalQuestions.length} answered`;
         let dots = "";
-        globalQuestions.forEach((_, i) => {
-            let cls = "question-dot";
-            if (answers[i]) cls += " answered";
-            else cls += " unanswered";
-            if (i === currentQuestion) cls += " current";
-            dots += `<span class="${cls}" onclick="jumpToQuestion(${i})">${i+1}</span>`;
-        });
+        globalQuestions.forEach((_, i) => { let cls = "question-dot"; if (answers[i]) cls += " answered"; else cls += " unanswered"; if (i === currentQuestion) cls += " current"; dots += `<span class="${cls}" onclick="jumpToQuestion(${i})">${i+1}</span>`; });
         document.getElementById("questionDots").innerHTML = dots;
         updateSubmitButtonVisibility();
     }
@@ -540,214 +740,152 @@
     function nextQuestion() { if (!examSubmitted && examActive && currentQuestion < globalQuestions.length - 1) { currentQuestion++; showQuestion(); } }
     function previousQuestion() { if (!examSubmitted && examActive && currentQuestion > 0) { currentQuestion--; showQuestion(); } }
     
-    async function submitExam(isAuto = false) {
-        if (examSubmitted) return;
-        if (!isAuto && currentQuestion !== globalQuestions.length - 1) {
-            alert("⚠️ You can only submit the exam from the LAST question. Navigate to final question.");
-            return;
-        }
-        stopTimer();
-        examSubmitted = true;
-        examActive = false;
+    function displayFullReview() {
         let score = 0;
         globalQuestions.forEach((q, i) => { if (answers[i] === q.answer) score++; });
+        let percent = (score/globalQuestions.length*100).toFixed(1);
+        
+        let html = `<h3>📝 COMPLETE EXAM REVIEW</h3>`;
+        html += `<p style="font-size:1.2rem; margin-bottom:15px;"><strong>Your Score: ${score}/${globalQuestions.length} (${percent}%)</strong></p>`;
+        html += `<hr style="margin:15px 0;">`;
+        
+        globalQuestions.forEach((q, i) => {
+            const userAnswer = answers[i] || "Not answered";
+            const isCorrect = (userAnswer === q.answer);
+            const statusIcon = isCorrect ? "✅" : "❌";
+            const answerClass = isCorrect ? "review-correct" : "review-wrong";
+            
+            html += `<div class="review-card">
+                <div class="review-question">${statusIcon} <strong>Question ${i+1}:</strong> ${escapeHtml(q.q)}</div>
+                <div class="review-options">
+                    <strong>Options:</strong><br>
+                    <div class="review-option ${q.answer === q.options[0] ? 'review-option-correct' : ''}">A: ${escapeHtml(q.options[0])} ${q.answer === q.options[0] ? '✓ (Correct Answer)' : ''}</div>
+                    <div class="review-option ${q.answer === q.options[1] ? 'review-option-correct' : ''}">B: ${escapeHtml(q.options[1])} ${q.answer === q.options[1] ? '✓ (Correct Answer)' : ''}</div>
+                    <div class="review-option ${q.answer === q.options[2] ? 'review-option-correct' : ''}">C: ${escapeHtml(q.options[2])} ${q.answer === q.options[2] ? '✓ (Correct Answer)' : ''}</div>
+                    <div class="review-option ${q.answer === q.options[3] ? 'review-option-correct' : ''}">D: ${escapeHtml(q.options[3])} ${q.answer === q.options[3] ? '✓ (Correct Answer)' : ''}</div>
+                </div>
+                <div class="review-answer ${answerClass}">
+                    <strong>Your answer:</strong> ${escapeHtml(userAnswer)}
+                </div>
+                <div class="review-answer" style="background:#eef2ff;">
+                    <strong>Correct answer:</strong> ${escapeHtml(q.answer)}
+                </div>
+            </div>`;
+        });
+        
+        document.getElementById("reviewModal").innerHTML = html;
+    }
+    
+    function toggleReviewAnswers() {
+        let modal = document.getElementById("reviewModal");
+        if (!modal) return;
+        if (modal.classList.contains("hidden")) {
+            displayFullReview();
+            modal.classList.remove("hidden");
+        } else {
+            modal.classList.add("hidden");
+        }
+    }
+    
+    async function submitExam(isAuto = false) {
+        if (examSubmitted) return;
+        if (!isAuto && currentQuestion !== globalQuestions.length - 1) { alert("⚠️ Submit from last question only."); return; }
+        stopTimer(); examSubmitted = true; examActive = false;
+        let score = 0; globalQuestions.forEach((q, i) => { if (answers[i] === q.answer) score++; });
         let percent = (score / globalQuestions.length) * 100;
-        let status = percent >= 50 ? "PASS" : "FAIL";
-        await saveScoreToSheet(currentUser, currentUserPassword, score, globalQuestions.length, percent.toFixed(1), status);
-        document.getElementById("result").innerHTML = `<div style="background:${percent>=50?'#d1fae5':'#fee2e2'}; padding:20px; border-radius:32px; text-align:center;"><h2>${percent>=50?'🎉 PASSED!':'📉 FAILED!'}</h2><p style="font-size:2.2rem;">${score}/${globalQuestions.length} (${percent.toFixed(1)}%)</p></div>`;
+        await saveScoreToSheet(currentUser, currentUserPassword, score, globalQuestions.length, percent.toFixed(1), percent >= 50 ? "PASS" : "FAIL");
+        document.getElementById("result").innerHTML = `<div style="background:${percent>=50?'#d1fae5':'#fee2e2'}; padding:20px; border-radius:32px; text-align:center;"><h2>${percent>=50?'🎉 PASSED!':'📉 FAILED!'}</h2><p style="font-size:2rem;">${score}/${globalQuestions.length} (${percent.toFixed(1)}%)</p></div>`;
         document.getElementById("submitContainer").classList.add("hidden");
-        updateStats();
-        await loadScoresFromSheet();
+        
+        const reviewSection = document.getElementById("reviewSection");
+        if (reviewSection) {
+            if (isAnswersViewAllowed()) {
+                reviewSection.innerHTML = `<button class="view-answer-btn" onclick="toggleReviewAnswers()">📋 VIEW FULL ANSWER REVIEW</button><div id="reviewModal" class="hidden review-modal"></div>`;
+                reviewSection.classList.remove("hidden");
+            } else {
+                reviewSection.innerHTML = `<p style="text-align:center; padding:15px; background:#fef9e3; border-radius:24px;">📌 Answer review is currently disabled by the administrator.</p>`;
+                reviewSection.classList.remove("hidden");
+            }
+        }
+        updateStats(); await loadScoresFromSheet();
     }
     
     async function uploadFileToSheet(replaceMode) {
-        const fileInput = document.getElementById("fileInput");
-        const file = fileInput.files[0];
-        if (!file) {
-            alert("📁 Please select a .txt file first");
-            return;
+        let file = document.getElementById("fileInput").files[0];
+        if (!file) { alert("Select a .txt file"); return; }
+        let progressDiv = document.getElementById("uploadProgress");
+        progressDiv.innerHTML = '<div class="progress-bar"><div class="progress-fill" style="width:10%">Reading...</div></div>';
+        let text = await file.text();
+        let blocks = text.split(/\n\s*\n/);
+        let parsed = [];
+        for (let block of blocks) {
+            if (!block.trim()) continue;
+            let lines = block.split('\n');
+            let q = "", opts = ["","","",""], ansLetter = "";
+            for (let line of lines) {
+                line = line.trim();
+                if (line.startsWith("Q:")) q = line.substring(2).trim();
+                else if (line.startsWith("A:")) opts[0] = line.substring(2).trim();
+                else if (line.startsWith("B:")) opts[1] = line.substring(2).trim();
+                else if (line.startsWith("C:")) opts[2] = line.substring(2).trim();
+                else if (line.startsWith("D:")) opts[3] = line.substring(2).trim();
+                else if (line.startsWith("ANS:")) ansLetter = line.substring(4).trim().toUpperCase();
+            }
+            if (q && opts[0] && opts[1] && opts[2] && opts[3] && "ABCD".includes(ansLetter)) {
+                parsed.push({question: q, optA: opts[0], optB: opts[1], optC: opts[2], optD: opts[3], answer: opts["ABCD".indexOf(ansLetter)] });
+            }
         }
-        const progressDiv = document.getElementById("uploadProgress");
-        progressDiv.innerHTML = '<div class="progress-bar"><div class="progress-fill" style="width:10%">📖 Reading file...</div></div>';
-        
-        const reader = new FileReader();
-        reader.onload = async function(ev) {
-            const text = ev.target.result;
-            const blocks = text.split(/\n\s*\n/);
-            let parsedQuestions = [];
-            
-            for (let block of blocks) {
-                if (!block.trim()) continue;
-                const lines = block.split('\n');
-                let q = "", opts = ["", "", "", ""], ansLetter = "";
-                for (let line of lines) {
-                    line = line.trim();
-                    if (line.startsWith("Q:") || line.startsWith("Q:")) q = line.substring(2).trim();
-                    else if (line.startsWith("A:")) opts[0] = line.substring(2).trim();
-                    else if (line.startsWith("B:")) opts[1] = line.substring(2).trim();
-                    else if (line.startsWith("C:")) opts[2] = line.substring(2).trim();
-                    else if (line.startsWith("D:")) opts[3] = line.substring(2).trim();
-                    else if (line.startsWith("ANS:")) ansLetter = line.substring(4).trim().toUpperCase();
-                }
-                if (q && opts[0] && opts[1] && opts[2] && opts[3] && "ABCD".includes(ansLetter)) {
-                    const answerIndex = "ABCD".indexOf(ansLetter);
-                    parsedQuestions.push({
-                        question: q,
-                        optA: opts[0],
-                        optB: opts[1],
-                        optC: opts[2],
-                        optD: opts[3],
-                        answer: opts[answerIndex]
-                    });
-                }
-            }
-            
-            if (parsedQuestions.length === 0) {
-                progressDiv.innerHTML = '<span style="color:#e74c3c;">❌ No valid questions found. Check format (Q:, A:, B:, C:, D:, ANS:).</span>';
-                return;
-            }
-            
-            if (replaceMode) {
-                progressDiv.innerHTML = '<div class="progress-bar"><div class="progress-fill" style="width:20%">🗑️ Deleting existing questions...</div></div>';
-                await fetch(`${SCRIPT_URL}?action=delete`).catch(()=>{});
-                await new Promise(r => setTimeout(r, 500));
-            }
-            
-            let successCount = 0;
-            for (let i = 0; i < parsedQuestions.length; i++) {
-                const qb = parsedQuestions[i];
-                const percentDone = Math.round(((i + 1) / parsedQuestions.length) * 100);
-                progressDiv.innerHTML = `<div class="progress-bar"><div class="progress-fill" style="width:${percentDone}%">📤 Uploading ${i+1}/${parsedQuestions.length} (${percentDone}%)</div></div>`;
-                
-                const url = `${SCRIPT_URL}?action=add&question=${encodeURIComponent(qb.question)}&optA=${encodeURIComponent(qb.optA)}&optB=${encodeURIComponent(qb.optB)}&optC=${encodeURIComponent(qb.optC)}&optD=${encodeURIComponent(qb.optD)}&answer=${encodeURIComponent(qb.answer)}`;
-                try {
-                    const res = await fetch(url);
-                    await res.json();
-                    successCount++;
-                } catch(e) { console.error(e); }
-                await new Promise(r => setTimeout(r, 50));
-            }
-            
-            progressDiv.innerHTML = `<span style="color:#10b981;">✅ Upload complete! ${successCount}/${parsedQuestions.length} questions imported successfully.</span>`;
-            setTimeout(() => { progressDiv.innerHTML = ""; }, 4000);
-            refreshQuestions();
-            updateStats();
-            fileInput.value = "";
-        };
-        reader.readAsText(file, "UTF-8");
+        if (parsed.length === 0) { progressDiv.innerHTML = "<span style='color:red'>❌ No valid questions</span>"; return; }
+        if (replaceMode) { await fetch(`${SCRIPT_URL}?action=delete`).catch(()=>{}); await new Promise(r => setTimeout(r,500)); }
+        let success = 0;
+        for (let i = 0; i < parsed.length; i++) {
+            let p = parsed[i];
+            progressDiv.innerHTML = `<div class="progress-bar"><div class="progress-fill" style="width:${Math.round((i+1)/parsed.length*100)}%">Uploading ${i+1}/${parsed.length}</div></div>`;
+            let url = `${SCRIPT_URL}?action=add&question=${encodeURIComponent(p.question)}&optA=${encodeURIComponent(p.optA)}&optB=${encodeURIComponent(p.optB)}&optC=${encodeURIComponent(p.optC)}&optD=${encodeURIComponent(p.optD)}&answer=${encodeURIComponent(p.answer)}`;
+            try { await fetch(url); success++; } catch(e) {}
+            await new Promise(r => setTimeout(r,30));
+        }
+        progressDiv.innerHTML = `<span style="color:green;">✅ Uploaded ${success}/${parsed.length}</span>`;
+        setTimeout(() => progressDiv.innerHTML = "", 3000);
+        refreshQuestions(); updateStats();
     }
     
     async function loadQuestionsFromSheet() {
         try {
-            document.getElementById("syncStatus").innerHTML = "🔄 Fetching question bank...";
-            const resp = await fetch(SCRIPT_URL);
-            
-            if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-            
-            const data = await resp.json();
-            console.log("📊 Loaded questions:", data.length);
-            
-            if (Array.isArray(data)) {
-                globalQuestions = data;
-                document.getElementById("syncStatus").innerHTML = `✅ Loaded ${globalQuestions.length} questions | Ready`;
-            } else {
-                globalQuestions = [];
-                document.getElementById("syncStatus").innerHTML = "⚠️ No questions found";
-            }
-            
+            let resp = await fetch(SCRIPT_URL);
+            let data = await resp.json();
+            globalQuestions = Array.isArray(data) ? data : [];
+            document.getElementById("syncStatus").innerHTML = `✅ Loaded ${globalQuestions.length} questions`;
             return globalQuestions;
-        } catch(e) { 
-            console.error("Load error:", e);
-            document.getElementById("syncStatus").innerHTML = "⚠️ Connection error. Check Google Sheets deployment.";
-            return globalQuestions.length ? globalQuestions : []; 
-        }
+        } catch(e) { document.getElementById("syncStatus").innerHTML = "⚠️ Connection error"; return globalQuestions; }
     }
     
-    async function addQuestionToSheet() { 
-        if(isAdding) return; 
-        const q = document.getElementById("newQuestion").value.trim(); 
-        const a = document.getElementById("optA").value.trim(), b = document.getElementById("optB").value.trim(), c = document.getElementById("optC").value.trim(), d = document.getElementById("optD").value.trim(); 
-        const correctLetter = document.getElementById("correctAnswer").value; 
-        if(!q || !a || !b || !c || !d || !correctLetter) { document.getElementById("addMessage").innerHTML = '<span style="color:#e74c3c;">❌ Fill all fields</span>'; return; } 
-        let ansText = ""; 
-        if(correctLetter === "A") ansText = a; else if(correctLetter === "B") ansText = b; else if(correctLetter === "C") ansText = c; else ansText = d; 
-        isAdding = true; document.getElementById("addButton").disabled = true; 
-        document.getElementById("addMessage").innerHTML = '<span>⏳ Submitting...</span>'; 
-        try { 
-            const url = `${SCRIPT_URL}?action=add&question=${encodeURIComponent(q)}&optA=${encodeURIComponent(a)}&optB=${encodeURIComponent(b)}&optC=${encodeURIComponent(c)}&optD=${encodeURIComponent(d)}&answer=${encodeURIComponent(ansText)}`; 
-            const res = await fetch(url); 
-            const result = await res.json(); 
-            if(result.success) { 
-                document.getElementById("addMessage").innerHTML = '<span style="color:#10b981;">✅ Question added!</span>'; 
-                document.getElementById("newQuestion").value = ""; document.getElementById("optA").value = ""; document.getElementById("optB").value = ""; 
-                document.getElementById("optC").value = ""; document.getElementById("optD").value = ""; document.getElementById("correctAnswer").value = ""; 
-                refreshQuestions(); updateStats(); 
-            } else { document.getElementById("addMessage").innerHTML = '<span style="color:#e74c3c;">❌ Server error</span>'; } 
-        } catch(e) { document.getElementById("addMessage").innerHTML = '<span style="color:#e74c3c;">❌ Connection failed</span>'; } 
-        finally { isAdding = false; document.getElementById("addButton").disabled = false; setTimeout(()=>{ document.getElementById("addMessage").innerHTML=""; },2000); } 
+    async function addQuestionToSheet() {
+        if(isAdding) return;
+        let q = document.getElementById("newQuestion").value.trim();
+        let a = document.getElementById("optA").value.trim(), b = document.getElementById("optB").value.trim(), c = document.getElementById("optC").value.trim(), d = document.getElementById("optD").value.trim();
+        let correct = document.getElementById("correctAnswer").value;
+        if(!q || !a || !b || !c || !d || !correct) { document.getElementById("addMessage").innerHTML = "❌ Fill all fields"; return; }
+        let ans = {A:a,B:b,C:c,D:d}[correct];
+        isAdding = true;
+        try {
+            await fetch(`${SCRIPT_URL}?action=add&question=${encodeURIComponent(q)}&optA=${encodeURIComponent(a)}&optB=${encodeURIComponent(b)}&optC=${encodeURIComponent(c)}&optD=${encodeURIComponent(d)}&answer=${encodeURIComponent(ans)}`);
+            document.getElementById("addMessage").innerHTML = "✅ Added!";
+            document.getElementById("newQuestion").value = ""; document.getElementById("optA").value = ""; document.getElementById("optB").value = ""; document.getElementById("optC").value = ""; document.getElementById("optD").value = ""; document.getElementById("correctAnswer").value = "";
+            refreshQuestions(); updateStats();
+        } catch(e) { document.getElementById("addMessage").innerHTML = "❌ Error"; }
+        finally { isAdding = false; setTimeout(()=>document.getElementById("addMessage").innerHTML="",2000); }
     }
     
-    async function deleteAllQuestions() { if(confirm("⚠️ PERMANENTLY delete ALL questions?")){ await fetch(`${SCRIPT_URL}?action=delete`); alert("All questions erased."); refreshQuestions(); updateStats(); } }
-    
-    async function loadScoresFromSheet() { 
-        try { 
-            const res = await fetch(`${SCRIPT_URL}?action=getScores`); 
-            allScores = await res.json(); 
-            displayScoresTable(); 
-            updateStats(); 
-            return allScores; 
-        } catch(e) { return []; } 
-    }
-    
-    function displayScoresTable() { 
-        let filterVal = document.getElementById("scoreFilter")?.value || "all"; 
-        let search = document.getElementById("scoreSearch")?.value.toLowerCase() || ""; 
-        let filtered = allScores.filter(s => (filterVal === "all" || s.username === filterVal) && s.username.toLowerCase().includes(search)); 
-        let tbody = document.getElementById("scoresTableBody"); 
-        if(!tbody) return; 
-        if(filtered.length===0) tbody.innerHTML = '<tr><td colspan="6">📭 No records</td></tr>'; 
-        else { 
-            tbody.innerHTML = ""; 
-            filtered.forEach(sc=>{ 
-                let cls = parseFloat(sc.percentage)>=50 ? 'pass' : 'fail'; 
-                tbody.innerHTML += `<tr><td><strong>${escapeHtml(sc.username)}</strong></td><td>${sc.score}</td><td>${sc.total}</td><td>${sc.percentage}</td><td class="${cls}">${sc.status}</td><td>${new Date(sc.examDate).toLocaleDateString()}</td></tr>`; 
-            }); 
-        } 
-    }
-    
-    async function saveScoreToSheet(username, password, score, total, percent, status) { 
-        try { 
-            const url = `${SCRIPT_URL}?action=submitScore&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}&score=${score}&total=${total}&percentage=${percent}&status=${encodeURIComponent(status)}`; 
-            const res = await fetch(url); 
-            const data = await res.json(); 
-            return data.success; 
-        } catch(e) { return false; } 
-    }
-    
+    async function deleteAllQuestions() { if(confirm("Delete ALL?")){ await fetch(`${SCRIPT_URL}?action=delete`); refreshQuestions(); updateStats(); } }
+    async function loadScoresFromSheet() { try { let res = await fetch(`${SCRIPT_URL}?action=getScores`); allScores = await res.json(); displayScoresTable(); updateStats(); return allScores; } catch(e) { return []; } }
+    function displayScoresTable() { let tbody = document.getElementById("scoresTableBody"); if(!tbody) return; let search = document.getElementById("scoreSearch")?.value.toLowerCase() || ""; let filtered = allScores.filter(s => s.username.toLowerCase().includes(search)); tbody.innerHTML = filtered.map(s => `<tr><td><strong>${escapeHtml(s.username)}</strong></td><td>${s.score}</td><td>${s.total}</td><td>${s.percentage}</td><td class="${parseFloat(s.percentage)>=50?'pass':'fail'}">${s.status}</td><td>${new Date(s.examDate).toLocaleDateString()}</td></tr>`).join("") || "<tr><td colspan='6'>No records</td></tr>"; }
+    async function saveScoreToSheet(u,p,score,total,percent,status) { try { await fetch(`${SCRIPT_URL}?action=submitScore&username=${encodeURIComponent(u)}&password=${encodeURIComponent(p)}&score=${score}&total=${total}&percentage=${percent}&status=${encodeURIComponent(status)}`); return true; } catch(e) { return false; } }
     async function refreshQuestions() { await loadQuestionsFromSheet(); displayQuestionsList(); updateStats(); }
-    
-    function displayQuestionsList() {
-        const qList = document.getElementById("questionList");
-        if(!qList) return;
-        if(globalQuestions.length===0) qList.innerHTML="<p>📭 No questions found</p>";
-        else { 
-            let html=""; 
-            globalQuestions.forEach((q,i)=>{ 
-                html+=`<div class="question-card"><div><strong>Q${i+1}: ${q.q}</strong><br>A:${q.options[0]} | B:${q.options[1]} | C:${q.options[2]} | D:${q.options[3]}<br><span style="color:#0f7b3a;">✓ ${q.answer}</span></div><button class="delete-btn" onclick="deleteSingleQuestion(${i})">🗑️ Delete</button></div>`; 
-            }); 
-            qList.innerHTML=html; 
-        }
-    }
-    
-    async function deleteSingleQuestion(idx) { 
-        if(!confirm("Delete this question?")) return; 
-        await fetch(`${SCRIPT_URL}?action=deleteSingle&index=${idx}`); 
-        refreshQuestions(); 
-        updateStats(); 
-    }
-    
-    function loadLocalData(type) { return JSON.parse(localStorage.getItem(type) || "[]"); }
-    function saveLocalData(type,data){ localStorage.setItem(type,JSON.stringify(data)); }
+    function displayQuestionsList() { let ql = document.getElementById("questionList"); if(!ql) return; if(globalQuestions.length===0) ql.innerHTML="<p>No questions</p>"; else { ql.innerHTML = globalQuestions.map((q,i)=>`<div class="question-card"><div><strong>Q${i+1}: ${q.q}</strong><br>A:${q.options[0]} | B:${q.options[1]} | C:${q.options[2]} | D:${q.options[3]}<br><span style="color:green;">✓ ${q.answer}</span></div><button class="delete-btn" onclick="deleteSingleQuestion(${i})">Delete</button></div>`).join(""); } }
+    async function deleteSingleQuestion(i) { if(confirm("Delete?")){ await fetch(`${SCRIPT_URL}?action=deleteSingle&index=${i}`); refreshQuestions(); updateStats(); } }
+    function loadLocalData(t) { return JSON.parse(localStorage.getItem(t) || "[]"); }
+    function saveLocalData(t,d) { localStorage.setItem(t,JSON.stringify(d)); }
     
     function showHomeSection(){ document.getElementById('homeSection').classList.remove('hidden'); document.getElementById('studentSection').classList.add('hidden'); document.getElementById('adminSection').classList.add('hidden'); stopTimer(); }
     function showStudentSection(){ document.getElementById('homeSection').classList.add('hidden'); document.getElementById('studentSection').classList.remove('hidden'); document.getElementById('adminSection').classList.add('hidden'); showStudentLoginSection(); }
@@ -756,42 +894,19 @@
     function showStudentRegister(){ document.getElementById('studentLogin').classList.add('hidden'); document.getElementById('studentRegister').classList.remove('hidden'); }
     function showStudentExam(){ document.getElementById('studentExamArea').classList.remove('hidden'); document.getElementById('studentHistoryArea').classList.add('hidden'); if(globalQuestions.length===0) loadQuestionsFromSheet().then(()=>loadExam()); else loadExam(); }
     function showStudentHistory(){ document.getElementById('studentExamArea').classList.add('hidden'); document.getElementById('studentHistoryArea').classList.remove('hidden'); loadStudentHistory(); stopTimer(); }
-    
-    function registerUser(){ let students=loadLocalData("students"); let u=document.getElementById("regUser").value.trim(), p=document.getElementById("regPass").value.trim(); if(!u||!p){alert("Enter credentials");return;} if(students.find(s=>s.username===u)){alert("Username exists");return;} students.push({username:u,password:p,registered:new Date().toISOString()}); saveLocalData("students",students); alert("✅ Account created!"); showStudentLoginSection(); updateStats(); }
-    
-    async function studentLogin(){ let students=loadLocalData("students"); let u=document.getElementById("sUser").value.trim(), p=document.getElementById("sPass").value.trim(); let student=students.find(s=>s.username===u && s.password===p); if(student){ currentUser=u; currentUserPassword=p; document.getElementById("studentName").innerText=u; document.getElementById("studentLogin").classList.add('hidden'); document.getElementById("studentDashboard").classList.remove('hidden'); await loadQuestionsFromSheet(); showStudentExam(); } else { alert("❌ Invalid login"); } }
-    
-    async function loadStudentHistory(){ await loadScoresFromSheet(); let userScores=allScores.filter(s=>s.username===currentUser); let html=""; if(userScores.length===0) html="<p>📭 No exams yet</p>"; else userScores.forEach((sc,i)=>{ let cls=parseFloat(sc.percentage)>=50?'pass':'fail'; html+=`<div class="score-card"><div><strong>Attempt #${i+1}</strong> - ${new Date(sc.examDate).toLocaleString()}</div><div>Score: ${sc.score}/${sc.total} (${sc.percentage}) <span class="${cls}">${sc.status}</span></div></div>`; }); document.getElementById("studentHistoryList").innerHTML=html; }
-    
-    function adminLogin(){ let u=document.getElementById("aUser").value, p=document.getElementById("aPass").value; if(u==="admin" && p==="tola@121212"){ document.getElementById("adminLogin").classList.add('hidden'); document.getElementById("adminDashboard").classList.remove('hidden'); refreshQuestions(); loadStudentsList(); loadScoresFromSheet(); } else alert("❌ Wrong admin credentials"); }
-    
-    function loadStudentsList(){ let students=loadLocalData("students"); let sList=document.getElementById("studentList"); if(!sList) return; if(students.length===0) sList.innerHTML="<p>👥 No students yet</p>"; else{ let html=""; students.forEach((s,i)=>{ html+=`<div class="student-card"><div><strong>${escapeHtml(s.username)}</strong><br><small>Registered: ${new Date(s.registered).toLocaleDateString()}</small></div><button class="delete-btn" onclick="deleteStudent(${i})">Delete</button></div>`; }); sList.innerHTML=html; } }
-    
-    function deleteStudent(i){ if(confirm("Delete student?")){ let students=loadLocalData("students"); students.splice(i,1); saveLocalData("students",students); loadStudentsList(); updateStats(); } }
+    async function studentLogin(){ let students=loadLocalData("students"); let u=document.getElementById("sUser").value.trim(), p=document.getElementById("sPass").value; let student=students.find(s=>s.username===u && s.password===p); if(student){ currentUser=u; currentUserPassword=p; document.getElementById("studentName").innerText=u; document.getElementById("studentLogin").classList.add('hidden'); document.getElementById("studentDashboard").classList.remove('hidden'); await loadQuestionsFromSheet(); showStudentExam(); } else { alert("❌ Invalid login"); } }
+    async function loadStudentHistory(){ await loadScoresFromSheet(); let us = allScores.filter(s=>s.username===currentUser); let html = us.length ? us.map((s,i)=>`<div class="score-card"><div><strong>Attempt #${i+1}</strong> - ${new Date(s.examDate).toLocaleString()}</div><div>Score: ${s.score}/${s.total} (${s.percentage}%) <span class="${parseFloat(s.percentage)>=50?'pass':'fail'}">${s.status}</span></div></div>`).join("") : "<p>No exams yet</p>"; document.getElementById("studentHistoryList").innerHTML=html; }
+    function adminLogin(){ let u=document.getElementById("aUser").value, p=document.getElementById("aPass").value; if(u==="admin" && p==="tola@121212"){ document.getElementById("adminLogin").classList.add('hidden'); document.getElementById("adminDashboard").classList.remove('hidden'); refreshQuestions(); loadStudentsList(); loadScoresFromSheet(); initSwitches(); } else alert("Wrong admin credentials"); }
+    function loadStudentsList(){ let students=loadLocalData("students"); let sl=document.getElementById("studentList"); if(!sl) return; if(students.length===0) sl.innerHTML="<p>No students</p>"; else { sl.innerHTML = students.map((s,i)=>`<div class="student-card"><div><strong>${escapeHtml(s.username)}</strong><br><small>Registered: ${new Date(s.registered).toLocaleDateString()}</small></div><button class="delete-btn" onclick="deleteStudent(${i})">Delete</button></div>`).join(""); } }
+    function deleteStudent(i){ let students=loadLocalData("students"); students.splice(i,1); saveLocalData("students",students); loadStudentsList(); updateStats(); }
     function deleteAllStudents(){ if(confirm("Delete ALL students?")){ saveLocalData("students",[]); loadStudentsList(); updateStats(); } }
-    function searchStudents(){ loadStudentsList(); }
     function filterScores(){ displayScoresTable(); }
-    
     function showAdminTab(tab, el){ document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active')); el.classList.add('active'); document.querySelectorAll('.admin-content').forEach(c=>c.classList.add('hidden')); document.getElementById(`admin${tab.charAt(0).toUpperCase()+tab.slice(1)}`).classList.remove('hidden'); if(tab==='questions') refreshQuestions(); if(tab==='scores') loadScoresFromSheet(); if(tab==='students') loadStudentsList(); }
+    async function updateStats(){ let q = globalQuestions.length, s = loadLocalData("students").length; document.getElementById("homeTotalQuestions").innerText = q; document.getElementById("homeTotalStudents").innerText = s; document.getElementById("homeTotalExams").innerText = allScores.length; document.getElementById("adminTotalQuestions").innerText = q; document.getElementById("adminTotalStudents").innerText = s; document.getElementById("adminTotalExams").innerText = allScores.length; if(allScores.length) document.getElementById("adminAvgScore").innerText = (allScores.reduce((a,b)=>a+parseFloat(b.percentage),0)/allScores.length).toFixed(1)+'%'; }
+    function escapeHtml(str){ return String(str).replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; return '&gt;'; }); }
+    function logout(){ if(confirm("Exit?")) location.reload(); }
     
-    async function updateStats(){ 
-        let questions = globalQuestions; 
-        let students = loadLocalData("students"); 
-        document.getElementById("homeTotalQuestions").innerText = questions.length; 
-        document.getElementById("homeTotalStudents").innerText = students.length; 
-        document.getElementById("homeTotalExams").innerText = allScores.length; 
-        document.getElementById("adminTotalQuestions").innerText = questions.length; 
-        document.getElementById("adminTotalStudents").innerText = students.length; 
-        document.getElementById("adminTotalExams").innerText = allScores.length; 
-        if(allScores.length>0){ let avg=allScores.reduce((sum,s)=>sum+parseFloat(s.percentage),0)/allScores.length; document.getElementById("adminAvgScore").innerText=avg.toFixed(1)+'%'; } 
-        let filter=document.getElementById("scoreFilter"); 
-        if(filter){ filter.innerHTML='<option value="all">All Students</option>'; students.forEach(s=>{ filter.innerHTML+=`<option value="${escapeHtml(s.username)}">${escapeHtml(s.username)}</option>`;}); } 
-    }
-    
-    function escapeHtml(str){ return String(str).replace(/[&<>]/g,function(m){if(m==='&')return'&amp;';if(m==='<')return'&lt;';if(m==='>')return'&gt;';return m;}); }
-    function logout(){ if(confirm("Exit session?")) location.reload(); }
-    
-    (async function init(){ await loadQuestionsFromSheet(); await loadScoresFromSheet(); updateStats(); })();
+    (async function init(){ await loadQuestionsFromSheet(); await loadScoresFromSheet(); updateStats(); initSwitches(); })();
 </script>
 </body>
 </html>
